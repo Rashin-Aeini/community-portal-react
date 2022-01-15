@@ -1,18 +1,21 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Dashboard from "./Admin/Dashboard";
-import Index from "./Admin/Index";
-import { Index as PostAdminIndex } from "./Admin/Post/Index";
+import AdminIndex from "./Admin/AdminIndex";
+import AdminPostIndex from "./Admin/Post/AdminPostIndex";
+import AdminPostCreate from "./Admin/Post/AdminPostCreate";
 
 const Routing = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route exact path="/" element={<Dashboard />}>
-                    <Route exact path="index" element={<Index />} />
-                    <Route path="post" element={<PostAdminIndex />}>
-                        <Route path=":id" element />
-                        <Route path="create" element />
+                <Route exact path="/" element={<Outlet />}>
+                    <Route path="admin" element={<Dashboard />}>
+                        <Route path="index" element={<AdminIndex />} />
+                        <Route path="post" element={<AdminPostIndex />}>
+                            <Route path=":id" element />
+                            <Route path="create" element={<AdminPostCreate />} />
+                        </Route>
                     </Route>
                 </Route>
             </Routes>
