@@ -29,22 +29,22 @@ const AdminPostCreate = () => {
                 <h1 className="h2">Create new post</h1>
             </div>
             <form onSubmit={handleSubmit(sendDataToServer)}>
-                <div class="mb-3">
-                    <label class="form-label" for="title">Title</label>
-                    <input class="form-control" type="text" {...register("title")} />
-                        <span class="text-danger" asp-validation-for="Title"></span>
+                <div className="mb-3">
+                    <label className="form-label" for="title">Title</label>
+                    <input className="form-control" type="text" {...register("title")} />
+                        <span className="text-danger" asp-validation-for="Title"></span>
                 </div>
-                <div class="mb-3">
-                    <label for="thumbnail" class="form-label">Thumbnail</label>
-                    <input class="form-control" type="text" {...register("thumbnail")} />
-                        <span class="text-danger" asp-validation-for="Thumbnail"></span>
+                <div className="mb-3">
+                    <label for="thumbnail" className="form-label">Thumbnail</label>
+                    <input className="form-control" type="text" {...register("thumbnail")} />
+                        <span className="text-danger" asp-validation-for="Thumbnail"></span>
                 </div>
-                <div class="mb-3">
-                    <label for="content" class="form-label">Content</label>
-                    <textarea class="form-control" {...register("content")}></textarea>
-                    <span class="text-danger" asp-validation-for="Content"></span>
+                <div className="mb-3">
+                    <label for="content" className="form-label">Content</label>
+                    <textarea className="form-control" {...register("content")}></textarea>
+                    <span className="text-danger" asp-validation-for="Content"></span>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </div>
     );
