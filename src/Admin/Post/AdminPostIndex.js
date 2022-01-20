@@ -17,6 +17,8 @@ const AdminPostIndex = () => {
 
     const location = useLocation(); // get browser address
 
+    console.log(location.pathname);
+
     const child = location.pathname.split('/').length == 4; // checking browser address for showing sub route
 
     const fetchFromServer = () => {
@@ -39,7 +41,7 @@ const AdminPostIndex = () => {
     };
 
     useEffect(fetchFromServer, []);
-    useEffect(fetchFromServer, [sort, type, search, page]);
+    useEffect(fetchFromServer, [sort, type, search, page, location]);
 
     //show outlet for sub route or table for main route
     return child ? (<Outlet />) : (
@@ -70,7 +72,7 @@ const AdminPostIndex = () => {
                                         return (
                                             <tr>
                                                 <td>{item.id}</td>
-                                                <td>{item.name}</td>
+                                                <td>{item.title}</td>
                                                 <td></td>
                                             </tr>
                                         )
@@ -86,7 +88,9 @@ const AdminPostIndex = () => {
                 </table>
             </div>
         </div>
+                    
     )
+    
 
 }
 
