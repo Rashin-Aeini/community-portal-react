@@ -4,6 +4,7 @@ import Dashboard from "./Admin/Dashboard";
 import AdminIndex from "./Admin/AdminIndex";
 import AdminPostIndex from "./Admin/Post/AdminPostIndex";
 import AdminPostCreate from "./Admin/Post/AdminPostCreate";
+import AdminCategoryIndex from "./Admin/Category/AdminCategoryIndex";
 
 const Routing = () => {
     return (
@@ -15,6 +16,9 @@ const Routing = () => {
                         <Route path="post" element={<AdminPostIndex />}>
                             <Route path=":id" element />
                             <Route path="create" element={<AdminPostCreate />} />
+                        </Route>
+                        <Route path="category" element={<AdminCategoryIndex />}>
+                            
                         </Route>
                     </Route>
                 </Route>

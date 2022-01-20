@@ -58,7 +58,7 @@ export default function Dashboard(props) {
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link to="#"
+                                                <Link to="/admin/category"
                                                     className="link-dark rounded">
                                                     Categories
                                                 </Link>
