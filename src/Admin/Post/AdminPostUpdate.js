@@ -1,48 +1,69 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { SERVER_URI } from "../../Config";
 
-const AdminPostCreate = () => {
+const AdminPostUpdate = () => {
 
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const parameters = useParams();
     const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+    const [selected, setSelected] = useState([]);
+
+    const { register, formState: { errors }, handleSubmit, setValue } = useForm();
+
+    useEffect(() => {
+        axios({
+            url: SERVER_URI + '/post/' + parseInt(parameters.id),
+            method: 'GET'
+        }).then(function (response) {
+
+            if (response.status == 400) {
+                navigate('admin/post');
+            }
+
+            if (response.status == 200) {
+                setValue('title', response.data.title);
+                setValue('thumbnail', response.data.thumbnail);
+                setValue('content', response.data.content);
+                setSelected(response.data.categories);
+            }
+
+        });
+
+        axios({
+            url: SERVER_URI + '/category?size=-1',
+            method: 'GET'
+        }).then(function (response) {
+            if (response.status == 200) {
+                setCategories(response.data.result)
+            }
+        })
+    }, []);
 
     const sendDataToServer = (formData) => {
-
+        
         if (formData.hasOwnProperty('categories')) {
             formData.categories = formData.categories.map(item => parseInt(item));
         }
 
         axios({
+            url: SERVER_URI + '/post/' + parseInt(parameters.id),
             method: "POST",
-            url: SERVER_URI + '/post',
             data: formData
         }).then(function (response) {
             if (response.status == 200) {
                 navigate('/admin/post');
             }
         });
-    }
 
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        axios({
-            method: "GET",
-            url: SERVER_URI + '/category?size=-1'
-        }).then(function (response) {
-            if (response.status === 200) {
-                setCategories(response.data.result);
-            }
-        })
-    }, []);
+    };
 
     return (
         <div>
             <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 className="h2">Create new post</h1>
+                <h1 className="h2">Update the post</h1>
             </div>
             <form onSubmit={handleSubmit(sendDataToServer)}>
                 <div className="mb-3">
@@ -65,13 +86,19 @@ const AdminPostCreate = () => {
 
                         const divKey = `checkbox-${index}`; // string.format("checkbox-{0}", index)
                         const inputId = `checkbox-${item.id}`;
+                        const checked = selected.filter(select => { return select == item.id }).length != 0;
+                        //console.log(checked);
 
                         // Id => id
                         // FirstName => firstName
 
                         return (
                             <div className="form-check mb-3" key={divKey}>
-                                <input className="form-check-input" type="checkbox" value={item.id} id={inputId} {...register("categories[]")} />
+                                <input className="form-check-input" type="checkbox"
+                                    value={item.id} id={inputId}
+                                    {...register("categories[]")}
+                                    defaultChecked={checked}
+                                />
                                 <label className="form-check-label" for={inputId}>
                                     {item.title}
                                 </label>
@@ -85,4 +112,4 @@ const AdminPostCreate = () => {
     );
 }
 
-export default AdminPostCreate;
+export default AdminPostUpdate;

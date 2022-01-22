@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, Link, Navigate, useNavigate } from "react-router-dom";
 import { SERVER_URI } from "../../Config";
 
 const AdminPostIndex = () => {
@@ -17,7 +17,7 @@ const AdminPostIndex = () => {
 
     const location = useLocation(); // get browser address
 
-    console.log(location.pathname);
+    const navigate = useNavigate();
 
     const child = location.pathname.split('/').length == 4; // checking browser address for showing sub route
 
@@ -42,6 +42,18 @@ const AdminPostIndex = () => {
 
     useEffect(fetchFromServer, []);
     useEffect(fetchFromServer, [sort, type, search, page, location]);
+
+    const deleteFromServer = (event) => {
+        const id = parseInt(event.target.value);
+        axios({
+            url: SERVER_URI + '/post/' + id,
+            method: 'DELETE'
+        }).then(function(response){
+            if(response.status == 200){
+                navigate('/admin/post');
+            }
+        })
+    }
 
     //show outlet for sub route or table for main route
     return child ? (<Outlet />) : (
@@ -73,7 +85,18 @@ const AdminPostIndex = () => {
                                             <tr>
                                                 <td>{item.id}</td>
                                                 <td>{item.title}</td>
-                                                <td></td>
+                                                <td>
+                                                    <Link
+                                                        className="btn btn-link text-decoration-none text-info"
+                                                        to={`/admin/post/${item.id}`}
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                    <button className="btn btn-link text-decoration-none text-danger"
+                                                    onClick={deleteFromServer} value={item.id}>
+                                                        Delete
+                                                    </button>
+                                                </td>
                                             </tr>
                                         )
                                     })
@@ -88,9 +111,9 @@ const AdminPostIndex = () => {
                 </table>
             </div>
         </div>
-                    
+
     )
-    
+
 
 }
 

@@ -17,7 +17,7 @@ const AdminCategoryIndex = () => {
     const [flag, setFlag] = useState(false);
     const [id, setId] = useState(0);
 
-    const { register, formState: {errors}, handleSubmit, setValue } = useForm();
+    const { register, formState: { errors }, handleSubmit, setValue } = useForm();
 
     const fetchDataFromServer = () => {
         axios({
@@ -34,7 +34,7 @@ const AdminCategoryIndex = () => {
     const sendDataToServer = (formData) => {
         let url = SERVER_URI + '/category';
 
-        if(flag && id != 0){
+        if (flag && id != 0) {
             url = url + '/' + id;
         }
 
@@ -42,8 +42,8 @@ const AdminCategoryIndex = () => {
             url: url,
             method: "POST",
             data: formData
-        }).then(function(response){
-            if(response.status == 200){
+        }).then(function (response) {
+            if (response.status == 200) {
                 setRefresh(!refresh);
 
                 //Restarting form to default duty
@@ -59,7 +59,7 @@ const AdminCategoryIndex = () => {
         const value = parseInt(event.target.value);
 
         categories.forEach(item => {
-            if(item.id == value){
+            if (item.id == value) {
                 setId(value);
                 setFlag(true);
                 setValue('title', item.title);
@@ -68,20 +68,20 @@ const AdminCategoryIndex = () => {
     }
 
     const deleteFromServer = (event) => {
-        
+
         const id = parseInt(event.target.value);
 
         axios({
             url: SERVER_URI + '/category/' + id,
             method: "DELETE"
-        }).then(function(response){
-            if(response.status == 200){
+        }).then(function (response) {
+            if (response.status == 200) {
                 setRefresh(!refresh);
             }
         });
     };
 
-    
+
 
     useEffect(fetchDataFromServer, []);
     useEffect(fetchDataFromServer, [search, page, size, refresh]);
