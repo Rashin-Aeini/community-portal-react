@@ -9,21 +9,24 @@ const AdminPostCreate = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const navigate = useNavigate();
 
-    const sendDataToServer = (formData) => {
-
-        if (formData.hasOwnProperty('categories')) {
+    const sendDataToServer = async (formData) => {
+        if (
+            formData.hasOwnProperty('categories') &&
+            formData.categories instanceof Array &&
+            formData.categories.length != 0
+        ) {
             formData.categories = formData.categories.map(item => parseInt(item));
         }
 
-        axios({
-            method: "POST",
+        const response = await axios({
             url: SERVER_URI + '/post',
+            method: "POST",
             data: formData
-        }).then(function (response) {
-            if (response.status == 200) {
-                navigate('/admin/post');
-            }
         });
+        
+        if (response.status == 200) {
+            navigate('/admin/post');
+        }
     }
 
     const [categories, setCategories] = useState([]);
