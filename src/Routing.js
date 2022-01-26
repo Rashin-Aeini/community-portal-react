@@ -6,6 +6,7 @@ import AdminPostIndex from "./Admin/Post/AdminPostIndex";
 import AdminPostCreate from "./Admin/Post/AdminPostCreate";
 import AdminCategoryIndex from "./Admin/Category/AdminCategoryIndex";
 import AdminPostUpdate from "./Admin/Post/AdminPostUpdate";
+import AdminMenuIndex from "./Admin/Menu/AdminMenuIndex";
 
 const Routing = () => {
     return (
@@ -18,9 +19,8 @@ const Routing = () => {
                             <Route path=":id" element={<AdminPostUpdate />} />
                             <Route path="create" element={<AdminPostCreate />} />
                         </Route>
-                        <Route path="category" element={<AdminCategoryIndex />}>
-
-                        </Route>
+                        <Route path="category" element={<AdminCategoryIndex />} />
+                        <Route path="menu" element={<AdminMenuIndex />} />
                     </Route>
                 </Route>
             </Routes>

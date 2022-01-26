@@ -66,12 +66,19 @@ export default function Dashboard(props) {
                                         </ul>
                                     </div>
                                 </li>
+                                <li className="mb-1" style={{fontWeight: '600', padding: '0.25rem 0.5rem', textDecoration: 'none'}}>
+                                    <Link
+                                        to="/admin/menu"
+                                        className="link-dark rounded text-decoration-none">
+                                        Menus
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                     </nav>
 
                     <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <Outlet/>
+                        <Outlet />
                     </main>
                 </div>
             </div>
