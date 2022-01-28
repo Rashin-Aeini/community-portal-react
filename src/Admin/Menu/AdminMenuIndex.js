@@ -1,12 +1,15 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { SERVER_URI } from "../../Config";
+import { useUser } from "../../UserContext";
 
 const AdminMenuIndex = () => {
     //
 
     const [menus, setMenus] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    const { user } = useUser();
 
     useEffect(async () => {
         let response = await axios({
@@ -32,9 +35,12 @@ const AdminMenuIndex = () => {
     const addToMenu = (event) => {
         axios({
             url: SERVER_URI + '/menu?id=' + parseInt(event.target.value),
-            method: 'POST'
-        }).then(function(response){
-            if(response.status == 200){
+            method: 'POST',
+            headers: {
+                authorization: 'Bearer ' + user.token
+            }
+        }).then(function (response) {
+            if (response.status == 200) {
                 let content = menus.filter(item => true);
                 content.push(response.data);
                 setMenus(content);
@@ -46,8 +52,11 @@ const AdminMenuIndex = () => {
         axios({
             url: SERVER_URI + '/menu/' + parseInt(event.target.value),
             method: "DELETE",
-        }).then(function(response){
-            if(response.status == 200){
+            headers: {
+                'authentication': 'ahad:1234'
+            }
+        }).then(function (response) {
+            if (response.status == 200) {
                 let content = menus.filter(item => item.id != parseInt(event.target.value));
                 setMenus(content);
             }
@@ -84,19 +93,19 @@ const AdminMenuIndex = () => {
                                                 categories.filter(item => {
                                                     return menus.filter(menu => { return menu.id == item.id }).length == 0
                                                 })
-                                                .map(item => {
-                                                    return (
-                                                        <tr key={item.id}>
-                                                            <td>{item.id}</td>
-                                                            <td>{item.title}</td>
-                                                            <td>
-                                                                <button value={item.id} className="btn btn-link text-success text-decoration-none" onClick={addToMenu}>
-                                                                    Add
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
+                                                    .map(item => {
+                                                        return (
+                                                            <tr key={item.id}>
+                                                                <td>{item.id}</td>
+                                                                <td>{item.title}</td>
+                                                                <td>
+                                                                    <button value={item.id} className="btn btn-link text-success text-decoration-none" onClick={addToMenu}>
+                                                                        Add
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
                                             ) :
                                             (
                                                 <tr>
