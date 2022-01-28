@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import './Dashboard.css';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { SERVER_URI } from '../Config';
+import { useUser } from '../UserContext';
 
 export default function Dashboard(props) {
+    const { user } = useUser();
+    const navigate = useNavigate();
+
+    console.log(user);
+
+    useEffect(() => {
+        let body = document.querySelector('body');
+
+        if(body != undefined){
+            body.classList.remove("login");
+        }
+
+        if (user.token != '') {
+            axios({
+                url: SERVER_URI + '/token?number=' + user.token,
+                method: "POST"
+            }).then(function (response) {
+                if (response.status == 400) {
+                    navigate('/login');
+                }
+            });
+        } else {
+            navigate('/login');
+        }
+    }, [])
     return (
         <div>
             <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-                <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
+                <Link className="navbar-brand col-md-3 col-lg-2 me-0 px-3" to="/">Company name</Link>
                 <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -66,7 +94,7 @@ export default function Dashboard(props) {
                                         </ul>
                                     </div>
                                 </li>
-                                <li className="mb-1" style={{fontWeight: '600', padding: '0.25rem 0.5rem', textDecoration: 'none'}}>
+                                <li className="mb-1" style={{ fontWeight: '600', padding: '0.25rem 0.5rem', textDecoration: 'none' }}>
                                     <Link
                                         to="/admin/menu"
                                         className="link-dark rounded text-decoration-none">
